@@ -6,8 +6,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import java.util.Enumeration;
-
 public class ReminderEmail {
     private static final String NEW_USER_ACCOUNT_VERIFICATION = "Headline";
     private static final String NEW_ORDER_VERIFICATION = "Hej Sara!! denna e från mitt program";

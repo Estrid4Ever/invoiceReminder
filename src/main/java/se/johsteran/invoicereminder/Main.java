@@ -5,10 +5,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.function.ToDoubleBiFunction;
-
 @Component
 public class Main implements CommandLineRunner {
 
@@ -18,13 +14,15 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        InvoiceFileReader invoiceFileReader = new InvoiceFileReader();
-        invoiceFileReader.setDirectory("/home/johannes/Programmering/Github/invoiceReminder");
-        invoiceFileReader.addCellsToRead("F6");
-        invoiceFileReader.findXlsxFilesInDirectory();
-        invoiceFileReader.readAllWorkBooks();
-
-        System.out.println("result: " + invoiceFileReader.getRows());
+//        InvoiceFileReader invoiceFileReader = new InvoiceFileReader();
+//        invoiceFileReader.setDirectory("/home/johannes/Documents/GitHub/invoiceReminder");
+//        invoiceFileReader.addCellsToRead("F6");
+//        invoiceFileReader.findXlsxFilesInDirectory();
+//        invoiceFileReader.readAllWorkBooks();
+//
+//        System.out.println("result: " + invoiceFileReader.getRows());
+        RunPyScript_ExcelToPDFExport run = new RunPyScript_ExcelToPDFExport();
+        run.runPyScript("blabla");
 
         // 1. read files
         // 2. add eligible files info to list
