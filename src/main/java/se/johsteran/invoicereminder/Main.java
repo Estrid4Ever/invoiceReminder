@@ -21,8 +21,8 @@ public class Main implements CommandLineRunner {
 //        invoiceFileReader.readAllWorkBooks();
 //
 //        System.out.println("result: " + invoiceFileReader.getRows());
-        RunPyScript_ExcelToPDFExport run = new RunPyScript_ExcelToPDFExport();
-        run.runPyScript("blabla");
+        ExcelToPDFExport run = new ExcelToPDFExport();
+        run.exportExcelToPDFUsingITextAndPoi("/home/johannes/Documents/GitHub/invoiceReminder/1 MALL 2024 Faktura till kattägare (1 katt).xlsx");
 
         // 1. read files
         // 2. add eligible files info to list
