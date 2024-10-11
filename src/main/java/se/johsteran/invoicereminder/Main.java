@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Component
@@ -16,8 +17,8 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
-        System.out.println(getAllInvoicesContent());
+        ArrayList<RowContent> allInvoicesContent = getAllInvoicesContent();
+        System.out.println(allInvoicesContent);
 
         /*
         1. read invoice files (this year and last year)
@@ -34,9 +35,21 @@ public class Main implements CommandLineRunner {
 
         InvoiceFileReader invoiceFileReader = new InvoiceFileReader();
         invoiceFileReader.addCellsToRead("F22");
+        invoiceFileReader.addCellsToRead("F5");
+        invoiceFileReader.addCellsToRead("F6");
+
+        /*for dev*/
         invoiceFileReader.setDirectory("/home/johannes/Documents/GitHub/invoiceReminder");
         invoiceFileReader.findXlsxFilesInDirectory();
         invoiceFileReader.readAllWorkBooks();
+
+        /*for deployment*/
+        /*for (int i = 0; i < 2; i++) {
+            String dir =System.getenv("invoiceDirectory") + "Fakturor " + (LocalDate.now().getYear()-i);
+            invoiceFileReader.setDirectory(dir);
+            invoiceFileReader.findXlsxFilesInDirectory();
+            invoiceFileReader.readAllWorkBooks();
+        }*/
 
         return invoiceFileReader.getRows();
     }
