@@ -10,7 +10,7 @@ public class ReminderService {
 
     public boolean checkIfReminderShouldBeSentForFile(InvoiceContent invoiceContent) {
 
-        if (Objects.equals(invoiceContent.getDueDate(), LocalDate.now())) {
+        if (Objects.equals(invoiceContent.getInvoiceDate(), LocalDate.now())) {
             return true;
         } else {
             return false;

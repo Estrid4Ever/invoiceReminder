@@ -3,22 +3,22 @@ package se.johsteran.invoicereminder;
 import java.time.LocalDate;
 
 public class InvoiceContent {
-    private LocalDate dueDate;
+    private LocalDate invoiceDate;
     private String fileName;
     private String recipient;
 
-    public InvoiceContent(LocalDate dueDate, String fileName, String recipient) {
-        this.dueDate = dueDate;
+    public InvoiceContent(LocalDate invoiceDate, String fileName, String recipient) {
+        this.invoiceDate = invoiceDate;
         this.fileName = fileName;
         this.recipient = recipient;
     }
 
-    public LocalDate getDueDate() {
-        return dueDate;
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
+    public void setInvoiceDate(LocalDate invoiceDate) {
+        this.invoiceDate = invoiceDate;
     }
 
     public String getFileName() {
@@ -40,7 +40,7 @@ public class InvoiceContent {
     @Override
     public String toString() {
         return "InvoiceContent{" +
-                "dueDate=" + dueDate +
+                "dueDate=" + invoiceDate +
                 ", fileName='" + fileName + '\'' +
                 ", recipient='" + recipient + '\'' +
                 '}';

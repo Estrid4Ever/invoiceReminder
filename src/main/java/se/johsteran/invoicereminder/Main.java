@@ -20,13 +20,14 @@ public class Main implements CommandLineRunner {
 //        invoiceFileReader.findXlsxFilesInDirectory();
 //        invoiceFileReader.readAllWorkBooks();
 //
-//        System.out.println("result: " + invoiceFileReader.getRows());
-        ExcelToPDFExport run = new ExcelToPDFExport();
-        run.exportExcelToPDFUsingITextAndPoi("/home/johannes/Documents/GitHub/invoiceReminder/1 MALL 2024 Faktura till kattägare (1 katt).xlsx");
+//
+//        ExcelToPDFExport run = new ExcelToPDFExport();
+//        run.exportExcelToPDFUsingITextAndPoi("/home/johannes/Documents/GitHub/invoiceReminder/1 MALL 2024 Faktura till kattägare (1 katt).xlsx");
+
 
         // 1. read files
         // 2. add eligible files info to list
-        // 3. cross reference with db(or in file checkmark?) to not send duplicate
+        // 3. cross-reference with db(or in file checkmark?) to not send duplicate
         // 4. generate email content
         // 5. send email
     }
