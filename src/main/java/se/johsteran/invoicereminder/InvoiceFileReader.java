@@ -1,9 +1,6 @@
 package se.johsteran.invoicereminder;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -116,6 +113,9 @@ public class InvoiceFileReader {
             System.out.println(e1);
         }
 
+        assert wb != null;
+        FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();  // Create the evaluator
+
         Sheet sheet = wb.getSheetAt(0); //getting the XSSFSheet object at given index
         if (sheet == null) {
             return "sheet N/A";
@@ -131,8 +131,38 @@ public class InvoiceFileReader {
             return "cell N/A";
         }
 
-        String value = cell.getStringCellValue();   //gets the cell value
+        String value = getCellValue(cell, evaluator);  //gets the cell value
 
         return value == null ? "value N/A" : value;  //returns the cell value if it´s not null
+    }
+
+    // Utility method to get cell value as string
+    private static String getCellValue(Cell cell, FormulaEvaluator evaluator) {
+        if (cell == null) {
+            return "";
+        }
+
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString();
+                } else {
+                    return String.valueOf(cell);
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                CellValue cellValue = evaluator.evaluate(cell);
+                return switch (cellValue.getCellType()) {
+                    case STRING -> cellValue.getStringValue();
+                    case NUMERIC -> String.valueOf(cellValue.getNumberValue());
+                    case BOOLEAN -> String.valueOf(cellValue.getBooleanValue());
+                    default -> "";
+                };
+            default:
+                return " ";
+        }
     }
 }

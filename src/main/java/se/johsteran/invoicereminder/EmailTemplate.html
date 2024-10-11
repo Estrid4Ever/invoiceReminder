@@ -7,7 +7,10 @@
 <style>
 
     body {
-        background-color: lightgreen;
+        background-color: #0e0e0e;
+        color: #ffffff;
+        font-family: "DejaVu Sans Mono",monospace ;
+        padding: 1rem;
     }
     li {
         margin-bottom: 30px;
@@ -17,34 +20,42 @@
         font-size: large;
     }
 
+    p {
+        margin-bottom: 5rem;
+    }
+
     div {
         display: flex;
         align-items: center;
         justify-content: center;
+
     }
 
     ul {
         width: fit-content;
         padding: 2rem;
         border-radius: 1rem;
-        /*background-color: beige;*/
-        background-color: rgba(0, 0, 0, 0.7);
-        color: aliceblue;
+        background-color: rgb(30, 47, 69);
+
+        /*color: aliceblue;*/
+        scale: 1.4;
+    }
+
+    span {
+        text-decoration: underline;
+        font-size: xx-large;
+        font-weight: bold;
     }
 
 </style>
 <body>
-<h1>Det är dags att skicka faktura för: {katt(er)}</h1>
+<h2>Det är dags att <span>skicka faktura</span> för: {katt(er)}</h2>
 <hr>
-<h3>Detta är en automatisk påminnelse för fakturautskick.</h3>
+<p>Detta är en automatisk påminnelse för fakturautskick.</p>
 <div>
 <ul>
-    <li>Ägare: <h4>{fullt namn}, {mejl}</h4></li>
     <li>Katt(er): <h4>{namn på katt(er)}</h4></li>
-    <li>Förfallodatum: <h4>{2024-00-00}</h4></li>
-    <li>Fakturadatum: <h4>{2024-00-00}</h4></li>
-    <li>Vistelseperiod: <h4>{2024-00-00 till 2024-00-01}</h4></li>
-    <li>Namn på tillhörande excel-fil: <h4>{faktura.xlsx}</h4></li>
+    <li>Total summa: <h4>{0} kr</h4></li>
 </ul>
 </div>
 </body>
