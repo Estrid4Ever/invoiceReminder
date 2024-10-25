@@ -2,13 +2,10 @@ package se.johsteran.invoicereminder;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class ReminderEmail {
-    private static final String NEW_USER_ACCOUNT_VERIFICATION = "Headline";
-    private static final String NEW_ORDER_VERIFICATION = "Hej Sara!! denna e från mitt program";
 
     public JavaMailSender emailSender;
 
@@ -17,29 +14,22 @@ public class ReminderEmail {
     }
 
 
-    public void sendVerificationToken(String to, String token) {
-        try{
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
-            message.setTo(to);
-            message.setText("wazzaaah: " + token);
-            emailSender.send(message);
-        } catch (Exception exception){
-            System.out.println(exception.getMessage());
-            throw new RuntimeException(exception.getMessage());
-        }
+    public String getCatName(String fileName) {
+        return fileName.split("-0\\d")[1].split("\\.")[0].trim();
     }
 
+    public void sendReminderEmail(InvoiceContent invoice) {
+        String orderText = generateInvoiceReminderHtmlEmail(invoice);
 
-    public void sendOrderVerification(String to) {
-        String orderText = generateOrderHtmlEmail();
+        String catName = getCatName(invoice.getFileName());
+
         try {
 
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setSubject(NEW_ORDER_VERIFICATION);
+            helper.setSubject("Påminnelse om fakturautskick: " + catName);
             helper.setFrom("lohagakattpensionat@gmail.com");
-            helper.setTo(to);
+            helper.setTo("johannes.randen@gmail.com");
             helper.setText(orderText, true); // true indikerar att innehållet är HTML
             emailSender.send(message);
         } catch (MessagingException e) {
@@ -47,44 +37,168 @@ public class ReminderEmail {
         }
     }
 
-    public String generateOrderHtmlEmail(){
-        StringBuilder emailContent = new StringBuilder();
-        int totalOrderPrice = 0;
+    public String generateInvoiceReminderHtmlEmail(InvoiceContent invoice){
 
-        // Börja HTML-dokumentet
-        emailContent.append("<html><body>");
+        String invoiceReminderTemplate = """
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Påminnelse om fakturautskick</title>
+                </head>
+                <style>
+                
+                    body {
+                        background-color: #0e0e0e;
+                        color: #ffffff;
+                        font-family: "DejaVu Sans Mono",monospace ;
+                        padding: 1rem;
+                    }
+                    li {
+                        margin-bottom: 30px;
+                    }
+                
+                    h4 {
+                        font-size: large;
+                    }
+                
+                    p {
+                        margin-bottom: 5rem;
+                    }
+                
+                    div {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                
+                    }
+                
+                    ul {
+                        width: fit-content;
+                        padding: 2rem;
+                        border-radius: 1rem;
+                        background-color: rgb(30, 47, 69);
+                
+                        /*color: aliceblue;*/
+                        scale: 1.4;
+                    }
+                
+                    span {
+                        text-decoration: underline;
+                        font-size: xx-large;
+                        font-weight: bold;
+                    }
+                
+                </style>
+                <body>
+                <h2>Det är dags att <span>skicka faktura</span> för: %s</h2>
+                <hr>
+                <p>Detta är en automatisk påminnelse om fakturautskick.</p>
+                <div>
+                <ul>
+                    <li>Katt(er): <h4>%s</h4></li>
+                    <li>Total summa: <h4>%s kr</h4></li>
+                </ul>
+                </div>
+                </body>
+                </html>""";
 
-        // Lägg till rubrik för beställningen
-        emailContent.append("<h2>Din beställning:</h2>");
+        String catName = getCatName(invoice.getFileName());
 
-        // Skapa en tabell för att visa produkterna
-        emailContent.append("<table border=\"1\">");
-        emailContent.append("<tr><th>Produkt</th><th>Antal</th><th>Pris</th></tr>");
+        String invoiceReminderEmail = String.format(invoiceReminderTemplate, catName, catName, invoice.getTotalPaymentSum());
 
-//        Enumeration<Products> keys = items.keys();
-//        while (keys.hasMoreElements()) {
-//            Products key = keys.nextElement();
-//            Integer value = items.get(key);
-//            int totalPrice = key.getPrice() * value;
-//
-//            // Lägg till varje produkt i tabellen
-//            emailContent.append("<tr>");
-//            emailContent.append("<td>").append(key.getName()).append("</td>");
-//            emailContent.append("<td>").append(value).append("</td>");
-//            emailContent.append("<td>").append(totalPrice).append(" kr</td>");
-//            emailContent.append("</tr>");
-//            totalOrderPrice += totalPrice;
-//
-//        }
+        return invoiceReminderEmail;
+    }
 
-        // Avsluta tabellen och HTML-dokumentet
-        emailContent.append("</table>");
-        emailContent.append("<p> Total pris: </p>" + totalOrderPrice);
-        emailContent.append("<p>Tack för din beställning!</p>");
-        emailContent.append("</body></html>");
+    public void sendPaymentIsDueEmail(InvoiceContent invoice) {
+        String orderText = generatePaymentIsDueHtmlEmail(invoice);
 
+        String catName = getCatName(invoice.getFileName());
 
-        return emailContent.toString();
+        try {
+
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setSubject("Förfallodatum för: " + catName);
+            helper.setFrom("lohagakattpensionat@gmail.com");
+            helper.setTo("johannes.randen@gmail.com");
+            helper.setText(orderText, true); // true indikerar att innehållet är HTML
+            emailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error while sending email: " + e.getMessage(), e);
+        }
+    }
+
+    private String generatePaymentIsDueHtmlEmail(InvoiceContent invoice) {
+        String invoiceReminderTemplate = """
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Påminnelse för fakturautskick</title>
+                </head>
+                <style>
+                
+                    body {
+                        background-color: #0e0e0e;
+                        color: #ffffff;
+                        font-family: "DejaVu Sans Mono",monospace ;
+                        padding: 1rem;
+                    }
+                    li {
+                        margin-bottom: 30px;
+                    }
+                
+                    h4 {
+                        font-size: large;
+                    }
+                
+                    p {
+                        margin-bottom: 5rem;
+                    }
+                
+                    div {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                
+                    }
+                
+                    ul {
+                        width: fit-content;
+                        padding: 2rem;
+                        border-radius: 1rem;
+                        background-color: rgb(69, 38, 30);
+                
+                        /*color: aliceblue;*/
+                        scale: 1.4;
+                    }
+                
+                    span {
+                        text-decoration: underline;
+                        font-size: xx-large;
+                        font-weight: bold;
+                    }
+                
+                </style>
+                <body>
+                <h2>Nu ska fakturan för: %s, <span>vara betald</span></h2>
+                <hr>
+                <p>Detta är en automatisk påminnelse om förfallodatum.</p>
+                <div>
+                <ul>
+                    <li>Katt(er): <h4>%s</h4></li>
+                    <li>Total summa: <h4>%s</h4></li>
+                </ul>
+                </div>
+                </body>
+                </html>""";
+
+        String catName = getCatName(invoice.getFileName());
+
+        String invoiceReminderEmail = String.format(invoiceReminderTemplate, catName, catName, invoice.getTotalPaymentSum());
+
+        return invoiceReminderEmail;
     }
 
 }

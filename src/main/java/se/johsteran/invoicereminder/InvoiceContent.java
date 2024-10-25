@@ -3,22 +3,32 @@ package se.johsteran.invoicereminder;
 import java.time.LocalDate;
 
 public class InvoiceContent {
-    private LocalDate invoiceDate;
     private String fileName;
-    private String recipient;
+    private String totalPaymentSum;
+    private String invoiceDate;
+    private String paymentDueDate;
 
-    public InvoiceContent(LocalDate invoiceDate, String fileName, String recipient) {
-        this.invoiceDate = invoiceDate;
+    public InvoiceContent(String fileName, String totalPaymentSum, String invoiceDate, String paymentDueDate) {
         this.fileName = fileName;
-        this.recipient = recipient;
+        this.totalPaymentSum = totalPaymentSum;
+        this.invoiceDate = invoiceDate;
+        this.paymentDueDate = paymentDueDate;
     }
 
-    public LocalDate getInvoiceDate() {
+    public String getInvoiceDate() {
         return invoiceDate;
     }
 
-    public void setInvoiceDate(LocalDate invoiceDate) {
+    public void setInvoiceDate(String invoiceDate) {
         this.invoiceDate = invoiceDate;
+    }
+
+    public String getPaymentDueDate() {
+        return paymentDueDate;
+    }
+
+    public void setPaymentDueDate(String paymentDueDate) {
+        this.paymentDueDate = paymentDueDate;
     }
 
     public String getFileName() {
@@ -29,20 +39,21 @@ public class InvoiceContent {
         this.fileName = fileName;
     }
 
-    public String getRecipient() {
-        return recipient;
+    public String getTotalPaymentSum() {
+        return totalPaymentSum;
     }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public void setTotalPaymentSum(String totalPaymentSum) {
+        this.totalPaymentSum = totalPaymentSum;
     }
 
     @Override
     public String toString() {
         return "InvoiceContent{" +
-                "dueDate=" + invoiceDate +
+                "invoiceDate='" + invoiceDate + '\'' +
+                ", paymentDueDate='" + paymentDueDate + '\'' +
                 ", fileName='" + fileName + '\'' +
-                ", recipient='" + recipient + '\'' +
+                ", totalPaymentSum='" + totalPaymentSum + '\'' +
                 '}';
     }
 }
