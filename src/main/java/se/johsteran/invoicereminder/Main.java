@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Component
@@ -15,7 +16,6 @@ public class Main implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         //read all files from this year and last
         ArrayList<RowContent> rowContents = getAllInvoicesContent();
 
@@ -103,6 +103,7 @@ public class Main implements CommandLineRunner {
         ArrayList<InvoiceContent> invoices = new ArrayList<>();
 
         for (RowContent row : allRowContents) {
+
             invoices.add(new InvoiceContent(row.getCellContents().get(0),
                     row.getCellContents().get(1),
                     row.getCellContents().get(2),

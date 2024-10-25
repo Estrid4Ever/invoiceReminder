@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 public class ReminderEmail {
 
     public JavaMailSender emailSender;
+    private String[] emails = {"johannes.randen@gmail.com"};
 
     public ReminderEmail(JavaMailSender emailSender) {
         this.emailSender = emailSender;
@@ -15,7 +16,9 @@ public class ReminderEmail {
 
 
     public String getCatName(String fileName) {
-        return fileName.split("-0\\d")[1].split("\\.")[0].trim();
+        String[] catName = fileName.split("-0\\d");
+
+        return catName.length > 1 ? catName[1].split("\\.")[0].trim() : fileName;
     }
 
     public void sendReminderEmail(InvoiceContent invoice) {
@@ -29,7 +32,7 @@ public class ReminderEmail {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setSubject("Påminnelse om fakturautskick: " + catName);
             helper.setFrom("lohagakattpensionat@gmail.com");
-            helper.setTo("johannes.randen@gmail.com");
+            helper.setTo(emails);
             helper.setText(orderText, true); // true indikerar att innehållet är HTML
             emailSender.send(message);
         } catch (MessagingException e) {
@@ -121,7 +124,7 @@ public class ReminderEmail {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setSubject("Förfallodatum för: " + catName);
             helper.setFrom("lohagakattpensionat@gmail.com");
-            helper.setTo("johannes.randen@gmail.com");
+            helper.setTo(emails);
             helper.setText(orderText, true); // true indikerar att innehållet är HTML
             emailSender.send(message);
         } catch (MessagingException e) {

@@ -16,9 +16,14 @@ public class EligibleForDispatchHandler {
             return false;
         }
 
-        LocalDate invoiceDate = LocalDate.parse(invoiceContent.getInvoiceDate());
+        LocalDate invoiceDate = null;
+        try {
+            invoiceDate = LocalDate.parse(invoiceContent.getInvoiceDate());
+        } catch (Exception e) {
+            return false;
+        }
 
-        if (invoiceDate.isBefore(LocalDate.now()) || invoiceDate.isAfter(LocalDate.now().plusDays(5))) {
+        if (invoiceDate.isAfter(LocalDate.now()) && invoiceDate.isBefore(LocalDate.now().plusDays(5))) {
             return false;
         }
 
@@ -33,9 +38,14 @@ public class EligibleForDispatchHandler {
             return false;
         }
 
-        LocalDate invoiceDate = LocalDate.parse(invoiceContent.getPaymentDueDate());
+        LocalDate paymentDueDate = null;
+        try {
+            paymentDueDate = LocalDate.parse(invoiceContent.getPaymentDueDate());
+        } catch (Exception e) {
+            return false;
+        };
 
-        if (invoiceDate.isBefore(LocalDate.now()) || invoiceDate.isAfter(LocalDate.now().plusDays(5))) {
+        if (paymentDueDate.isAfter(LocalDate.now()) && paymentDueDate.isBefore(LocalDate.now().plusDays(5))) {
             return false;
         }
 
@@ -62,8 +72,8 @@ public class EligibleForDispatchHandler {
 
     public void updateFile(String invoiceFileNameToAdd, String fileName) {
         try {
-            FileWriter myWriter = new FileWriter(fileName);
-            myWriter.write(invoiceFileNameToAdd);
+            FileWriter myWriter = new FileWriter(fileName, true);
+            myWriter.write(invoiceFileNameToAdd + "\n");
             myWriter.flush();
             myWriter.close();
 
