@@ -199,7 +199,7 @@ public class ReminderEmail {
 
         String catName = getCatName(invoice.getFileName());
 
-        String invoiceReminderEmail = String.format(invoiceReminderTemplate, catName, catName, invoice.getTotalPaymentSum());
+        String invoiceReminderEmail = String.format(invoiceReminderTemplate, catName, catName, invoice.getTotalPaymentSum(), invoice.getFileName());
 
         return invoiceReminderEmail;
     }

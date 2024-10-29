@@ -18,12 +18,13 @@ public class EligibleForDispatchHandler {
 
         LocalDate invoiceDate = null;
         try {
-            invoiceDate = LocalDate.parse(invoiceContent.getInvoiceDate());
+            char[] dateArray = invoiceContent.getInvoiceDate().toCharArray();
+            invoiceDate = LocalDate.parse("20" + dateArray[0] + dateArray[1] + "-" + dateArray[2] + dateArray[3] + "-" + dateArray[4] + dateArray[5]);
         } catch (Exception e) {
             return false;
         }
 
-        if (invoiceDate.isAfter(LocalDate.now()) && invoiceDate.isBefore(LocalDate.now().plusDays(5))) {
+        if (invoiceDate.isBefore(LocalDate.now()) && invoiceDate.isAfter(LocalDate.now().minusDays(2))) {
             return false;
         }
 
@@ -40,16 +41,17 @@ public class EligibleForDispatchHandler {
 
         LocalDate paymentDueDate = null;
         try {
-            paymentDueDate = LocalDate.parse(invoiceContent.getPaymentDueDate());
+            char[] dateArray = invoiceContent.getPaymentDueDate().toCharArray();
+            paymentDueDate = LocalDate.parse("20" + dateArray[0] + dateArray[1] + "-" + dateArray[2] + dateArray[3] + "-" + dateArray[4] + dateArray[5]);
         } catch (Exception e) {
             return false;
         };
 
-        if (paymentDueDate.isAfter(LocalDate.now()) && paymentDueDate.isBefore(LocalDate.now().plusDays(5))) {
-            return false;
+        if (paymentDueDate.isEqual(LocalDate.now()) || paymentDueDate.isEqual(LocalDate.now().plusDays(1))) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public String readFile(String fileName) {

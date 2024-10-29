@@ -111,6 +111,7 @@ public class InvoiceFileReader {
         }
         catch(IOException e1) {
             System.out.println(e1);
+            return "no workbook";
         }
 
         assert wb != null;
