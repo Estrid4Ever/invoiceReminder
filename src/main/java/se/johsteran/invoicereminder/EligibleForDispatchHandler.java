@@ -18,17 +18,18 @@ public class EligibleForDispatchHandler {
 
         LocalDate invoiceDate = null;
         try {
-            char[] dateArray = invoiceContent.getInvoiceDate().toCharArray();
-            invoiceDate = LocalDate.parse("20" + dateArray[0] + dateArray[1] + "-" + dateArray[2] + dateArray[3] + "-" + dateArray[4] + dateArray[5]);
+            char[] date = invoiceContent.getInvoiceDate().toCharArray();
+            invoiceDate = LocalDate.parse("20" + date[0] + date[1] + "-" + date[2] + date[3] + "-" + date[4] + date[5]);
         } catch (Exception e) {
             return false;
         }
 
-        if (invoiceDate.isBefore(LocalDate.now()) && invoiceDate.isAfter(LocalDate.now().minusDays(2))) {
-            return false;
+
+        if (invoiceDate.isEqual(LocalDate.now()) || invoiceDate.isEqual(LocalDate.now().minusDays(1))) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public boolean checkIfPaymentDueReminderShouldBeSentForFile(InvoiceContent invoiceContent) {
@@ -41,13 +42,13 @@ public class EligibleForDispatchHandler {
 
         LocalDate paymentDueDate = null;
         try {
-            char[] dateArray = invoiceContent.getPaymentDueDate().toCharArray();
-            paymentDueDate = LocalDate.parse("20" + dateArray[0] + dateArray[1] + "-" + dateArray[2] + dateArray[3] + "-" + dateArray[4] + dateArray[5]);
+            char[] date = invoiceContent.getPaymentDueDate().toCharArray();
+            paymentDueDate = LocalDate.parse("20" + date[0] + date[1] + "-" + date[2] + date[3] + "-" + date[4] + date[5]);
         } catch (Exception e) {
             return false;
-        };
+        }
 
-        if (paymentDueDate.isEqual(LocalDate.now()) || paymentDueDate.isEqual(LocalDate.now().plusDays(1))) {
+        if (paymentDueDate.isEqual(LocalDate.now()) || paymentDueDate.isEqual(LocalDate.now().minusDays(1))) {
             return true;
         }
 

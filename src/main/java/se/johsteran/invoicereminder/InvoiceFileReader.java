@@ -73,7 +73,7 @@ public class InvoiceFileReader {
 
         if (dirFiles != null) {
             for (int i = 0; i < dirFiles.length; i++) {
-                if(dirFiles[i].isFile() && dirFiles[i].getName().endsWith(".xlsx")) {
+                if(dirFiles[i].isFile() && dirFiles[i].getName().endsWith(".xlsx") && !files.contains(dirFiles[i].getName())) {
                     files.add(dirFiles[i].getAbsolutePath());
                 }
             }

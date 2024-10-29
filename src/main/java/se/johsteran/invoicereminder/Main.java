@@ -28,13 +28,15 @@ public class Main implements CommandLineRunner {
         //check for files eligible to send email (due date)
         ArrayList<InvoiceContent> eligibleDueDateReminders = checkForEligibleDueDateReminders(allInvoiceContents);
 
+        System.out.println(eligibleInvoiceReminders);
+
         //update the records of what emails has been sent
-        updateReferenceFile(eligibleInvoiceReminders, "sentInvoices.txt");
-        updateReferenceFile(eligibleDueDateReminders, "sentPaymentDues.txt");
+        /*updateReferenceFile(eligibleInvoiceReminders, "sentInvoices.txt");
+        updateReferenceFile(eligibleDueDateReminders, "sentPaymentDues.txt");*/
 
         //generate and send email
-        sendInvoiceReminderEmails(eligibleInvoiceReminders);
-        sendPaymentDueEmail(eligibleDueDateReminders);
+        /*sendInvoiceReminderEmails(eligibleInvoiceReminders);
+        sendPaymentDueEmail(eligibleDueDateReminders);*/
 
         /*
         1. read invoice files (this year and last year)
@@ -121,7 +123,7 @@ public class Main implements CommandLineRunner {
         invoiceFileReader.addCellsToRead("F6");
 
         /*for dev*/
-        invoiceFileReader.setDirectory("/home/johannes/Programmering/Github/invoiceReminder");
+        invoiceFileReader.setDirectory("/home/johannes/Documents/GitHub/invoiceReminder");
         invoiceFileReader.findXlsxFilesInDirectory();
         invoiceFileReader.readAllWorkBooks();
 
