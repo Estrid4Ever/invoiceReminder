@@ -25,8 +25,10 @@ public class EligibleForDispatchHandler {
         }
 
 
-        if (invoiceDate.isEqual(LocalDate.now()) || invoiceDate.isEqual(LocalDate.now().minusDays(1))) {
-            return true;
+        for (int i = 0; i < 6; i++) {
+            if (invoiceDate.isEqual(LocalDate.now().minusDays(i))) {
+                return true;
+            }
         }
 
         return false;
@@ -48,9 +50,12 @@ public class EligibleForDispatchHandler {
             return false;
         }
 
-        if (paymentDueDate.isEqual(LocalDate.now()) || paymentDueDate.isEqual(LocalDate.now().minusDays(1))) {
-            return true;
+        for (int i = 0; i < 6; i++) {
+            if (paymentDueDate.isEqual(LocalDate.now().minusDays(i))) {
+                return true;
+            }
         }
+
 
         return false;
     }

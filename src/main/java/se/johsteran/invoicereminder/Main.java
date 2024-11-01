@@ -22,6 +22,8 @@ public class Main implements CommandLineRunner {
         //convert RowContent to InvoiceContent
         ArrayList<InvoiceContent> allInvoiceContents = rowContentToInvoiceContent(rowContents);
 
+        System.out.println(allInvoiceContents);
+
         //check for files eligible to send email (invoice date)
         ArrayList<InvoiceContent> eligibleInvoiceReminders = checkForEligibleInvoiceReminders(allInvoiceContents);
 
@@ -125,16 +127,15 @@ public class Main implements CommandLineRunner {
         /*for dev*/
         invoiceFileReader.setDirectory("/home/johannes/Documents/GitHub/invoiceReminder");
         invoiceFileReader.findXlsxFilesInDirectory();
-        invoiceFileReader.readAllWorkBooks();
 
         /*for deployment*/
         /*for (int i = 0; i < 2; i++) {
             String dir =System.getenv("invoiceDirectory") + "Fakturor " + (LocalDate.now().getYear()-i);
             invoiceFileReader.setDirectory(dir);
             invoiceFileReader.findXlsxFilesInDirectory();
-            invoiceFileReader.readAllWorkBooks();
         }*/
 
+        invoiceFileReader.readAllWorkBooks();
         return invoiceFileReader.getRows();
     }
 }
